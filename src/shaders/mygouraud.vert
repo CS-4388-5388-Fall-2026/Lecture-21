@@ -46,7 +46,21 @@ out vec2 uv;
 
 void main() 
 {
+    //light calculations
+    vec3 illumination = vec3(0,0,0);
+
+    for(int i=0; i< numLights; i++)
+    {
+        illumination += kAmbient * ambientIntensities[i];
+
+    }
+
+    //output the vertex color to the fragment shader
+    vertColor = color;
+    vertColor.rgb *= illumination;
+
+    vec3 worldPosition = (modelMatrix * vec4(position, 1)).xyz;
     //output
-    gl_Position = vec4(0, 0, 0, 1);
+    gl_Position = projectionMatrix * viewMatrix * vec4(worldPosition, 1);
 
 }
